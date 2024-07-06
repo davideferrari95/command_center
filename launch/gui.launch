@@ -1,0 +1,6 @@
+<launch>
+
+	<!-- Launch Command GUI -->
+	<node pkg="command_gui" type="command_gui.py" name="command_gui" output="screen"/>
+
+</launch>

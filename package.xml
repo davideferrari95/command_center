@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="2">
+
+  <name>command_center</name>
+  <version>0.0.0</version>
+  <description>The Command Center Package</description>
+  
+  <author email="davide.ferrari95@unimore.it">Davide Ferrari</author>
+  <maintainer email="davide.ferrari95@unimore.it">Davide Ferrari</maintainer>
+  <license>BSD-3</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>alexa_conversation</depend>
+  <depend>std_msgs</depend>
+
+</package>
