@@ -147,7 +147,7 @@ def check_action():
             return jsonify({'status': 'error', 'message': 'Invalid input'}), 400
 
         # Create Execute Task Command
-        command = ExecuteTaskCommand(data['name'], data['ID'], data['type'], data['info'], data['task_name'])
+        command = ExecuteTaskCommand(data['name'], data['ID'], data['info'], data['task_name'])
 
         # TODO: Check Feasibility -> Add Some Logic Here
         print(colored('\nSUCCESS: ', 'green'), ' Feasible Command - Execute Task\n')
