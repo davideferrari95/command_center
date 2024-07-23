@@ -1,0 +1,6 @@
+<launch>
+
+	<!-- Launch Command Server -->
+	<node pkg="command_center" type="command_server.py" name="command_server" output="screen"/>
+
+</launch>
