@@ -17,6 +17,30 @@ CommandUnion = Union[Command, PickCommand, MoveCommand, MoveObjectCommand, Execu
 # Create the Flask App
 app = Flask(__name__)
 
+# Available Objects
+available_objects = {
+    'scissors': 0,
+    'box': 1,
+    'hammer': 2,
+    'screwdriver': 3
+}
+
+# Available Locations
+available_locations = {
+    'table': 0,
+    'bench': 1,
+    'pickup area': 2,
+    'park': 3,
+}
+
+# Object Default Location
+object_default_location = {
+    'scissors': 'table',
+    'hammer': 'bench',
+    'box': 'pickup area',
+    'screwdriver': 'bench'
+}
+
 def return_function(command:CommandUnion, success:bool=False, json_status:int=400,  error_message:str='') -> jsonify:
 
     """ Return Function to Send Command to ROS and JSON Response """
@@ -32,6 +56,8 @@ def return_function(command:CommandUnion, success:bool=False, json_status:int=40
 # Check Action Route
 @app.route('/check_action', methods=['POST'])
 def check_action():
+
+    """ Check Action Route """
 
     # Get Data from the Request
     data = request.get_json()
@@ -62,14 +88,6 @@ def check_action():
 
     # Check Movement Command Feasibility
     if data['type'] == MOVE:
-
-        # Available Locations
-        available_locations = {
-            'table': 0,
-            'bench': 1,
-            'pickup area': 2,
-            'park': 3,
-        }
 
         # Check Arguments
         if not all([key in data for key in ['direction', 'distance', 'measure']]) and not 'location' in data:
@@ -134,24 +152,13 @@ def check_action():
     # Check Pick Command Feasibility
     elif data['type'] == PICK:
 
-        available_objects = {
-            'scissors': 0,
-            'box': 1,
-            'hammer': 2,
-            'screwdriver': 3
-        }
-
-        # Available Locations
-        available_locations = {
-            'table': 0,
-            'bench': 1,
-            'pickup area': 2,
-            'park': 3,
-        }
-
         # Check Arguments
         if not all([key in data for key in ['object_name', 'location']]):
             return return_function(PickCommand(data['name'], data['ID'], data['info']), False, 400, 'Invalid Input - Missing Object Name or Location')
+
+        # Check 'Null' Location
+        if data['location'] in ['null','chimera','']:
+            data['location'] = 'Unknown' if not data['object_name'] in object_default_location else object_default_location[data['object_name']]
 
         # Create Pick Command
         command = PickCommand(data['name'], data['ID'], data['info'], data['object_name'], data['location'])
@@ -172,24 +179,13 @@ def check_action():
     # Check Move Object Command Feasibility
     elif data['type'] == MOVE_OBJECT:
 
-        available_objects = {
-            'scissors': 0,
-            'box': 1,
-            'hammer': 2,
-            'screwdriver': 3
-        }
-
-        # Available Locations
-        available_locations = {
-            'table': 0,
-            'bench': 1,
-            'pickup area': 2,
-            'park': 3,
-        }
-
         # Check Arguments
         if not all([key in data for key in ['object_name', 'from_location', 'to_location']]):
             return return_function(MoveObjectCommand(data['name'], data['ID'], data['info']), False, 400, 'Invalid Input - Missing Object Name, From Location, or To Location')
+
+        # Check 'Null' From Location
+        if data['from_location'] in ['null','chimera','']:
+            data['from_location'] = 'Unknown' if not data['object_name'] in object_default_location else object_default_location[data['object_name']]
 
         # Create Move Object Command
         command = MoveObjectCommand(data['name'], data['ID'], data['info'], data['object_name'], data['from_location'], data['to_location'])
