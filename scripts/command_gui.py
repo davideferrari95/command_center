@@ -134,7 +134,7 @@ class CommandGUI():
 
                     # GOTO Command Information
                     self.labels['Location:'].grid(row=3, column=0, columnspan=2, sticky='w')
-                    self.labels_data['Location:'].config(text=command.getLocation(), fg='#007BFF')
+                    self.labels_data['Location:'].config(text=command.getLocation().capitalize(), fg='#FFBF00')
                     self.labels_data['Location:'].grid(row=3, column=2, columnspan=4, sticky='w')
 
                 else:
@@ -143,9 +143,9 @@ class CommandGUI():
                     self.labels['Direction:'].grid(row=3, column=0, sticky='w')
                     self.labels['Distance:'].grid(row=3, column=2, sticky='w')
                     # self.labels['Measure:'].grid(row=3, column=4, sticky='w')
-                    self.labels_data['Direction:'].config(text=command.getDirection(), fg='#007BFF')
-                    self.labels_data['Distance:'].config(text=command.getDistance(), fg='#007BFF')
-                    self.labels_data['Measure:'].config(text=command.getMeasure(), fg='#007BFF')
+                    self.labels_data['Direction:'].config(text=command.getDirection().capitalize(), fg='#FFBF00')
+                    self.labels_data['Distance:'].config(text=command.getDistance(), fg='#FFBF00')
+                    self.labels_data['Measure:'].config(text=command.getMeasure(), fg='#FFBF00')
                     self.labels_data['Direction:'].grid(row=3, column=1, sticky='w')
                     self.labels_data['Distance:'].grid(row=3, column=3, sticky='w', padx=5)
                     self.labels_data['Measure:'].grid(row=3, column=4, sticky='w')
@@ -155,8 +155,8 @@ class CommandGUI():
 
                 self.labels['Object Name:'].grid(row=3, column=0, columnspan=2, sticky='w')
                 self.labels['Location:'].grid(row=3, column=4, columnspan=2, sticky='w')
-                self.labels_data['Object Name:'].config(text=command.getObjectName(), fg='#007BFF')
-                self.labels_data['Location:'].config(text=command.getLocation(), fg='#007BFF')
+                self.labels_data['Object Name:'].config(text=command.getObjectName().capitalize(), fg='#FFBF00')
+                self.labels_data['Location:'].config(text=command.getLocation().capitalize(), fg='#FFBF00')
                 self.labels_data['Object Name:'].grid(row=3, column=2, sticky='w')
                 self.labels_data['Location:'].grid(row=3, column=6, sticky='w')
 
@@ -164,26 +164,26 @@ class CommandGUI():
             elif isinstance(command, MoveObjectCommand):
 
                 self.labels['Object Name:'].grid(row=3, column=0, columnspan=2, sticky='w')
-                self.labels['From Location:'].grid(row=3, column=2, sticky='w')
-                self.labels['From Location:'].config(text='From: ')
-                self.labels['To Location:'].grid(row=3, column=4, sticky='w', padx=10)
+                self.labels['From Location:'].grid(row=3, column=3, sticky='w')
+                self.labels['From Location:'].config(text='From:', padx=30)
+                self.labels['To Location:'].grid(row=3, column=5, sticky='w', padx=10)
                 self.labels['To Location:'].config(text='To: ')
-                self.labels_data['Object Name:'].config(text=command.getObjectName(), fg='#007BFF')
-                self.labels_data['From Location:'].config(text=command.getFromLocation(), fg='#007BFF')
-                self.labels_data['To Location:'].config(text=command.getToLocation(), fg='#007BFF')
-                self.labels_data['Object Name:'].grid(row=3, column=1, sticky='w')
-                self.labels_data['From Location:'].grid(row=3, column=3, sticky='w')
-                self.labels_data['To Location:'].grid(row=3, column=5, sticky='w')
+                self.labels_data['Object Name:'].config(text=command.getObjectName().capitalize(), fg='#FFBF00')
+                self.labels_data['From Location:'].config(text=command.getFromLocation().capitalize(), fg='#FFBF00')
+                self.labels_data['To Location:'].config(text=command.getToLocation().capitalize(), fg='#FFBF00')
+                self.labels_data['Object Name:'].grid(row=3, column=2, sticky='w')
+                self.labels_data['From Location:'].grid(row=3, column=4, sticky='w')
+                self.labels_data['To Location:'].grid(row=3, column=6, sticky='w')
 
             # Execute Task Command Information
             elif isinstance(command, ExecuteTaskCommand):
 
                 self.labels['Task Name:'].grid(row=3, column=0, columnspan=2, sticky='w')
-                self.labels_data['Task Name:'].config(text=command.getTaskName(), fg='#007BFF')
+                self.labels_data['Task Name:'].config(text=command.getTaskName().capitalize(), fg='#FFBF00')
                 self.labels_data['Task Name:'].grid(row=3, column=2, columnspan=2, sticky='w')
 
-            self.labels_data['Status:'].config(text='SUCCESS' if success else 'FAIL', fg='#007BFF')
-            self.labels_data['Command Info:'].config(text=error_message, fg='#007BFF')
+            self.labels_data['Status:'].config(text='SUCCESS' if success else 'FAIL', fg='#34D01F' if success else '#DC3545')
+            self.labels_data['Command Info:'].config(text=error_message, fg='#34D01F' if success else '#DC3545')
 
         else:
 
