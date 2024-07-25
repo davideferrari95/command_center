@@ -75,13 +75,50 @@ def check_action():
         if not all([key in data for key in ['direction', 'distance', 'measure']]) and not 'location' in data:
             return return_function(MoveCommand(data['name'], data['ID'], data['info']), False, 400, 'Invalid Input - Missing Direction, Distance, Measure, or Location')
 
-        # Create Movement Command
-        if 'location' in data: command = MoveCommand(data['name'], data['ID'], data['info'], location=data['location'])
-        else: command = MoveCommand(data['name'], data['ID'], data['info'], data['distance'], data['direction'], data['measure'])
+        # Check Location
+        if 'location' in data:
 
-        # TODO: Check Feasibility -> Add Some Logic Here
-        # Check Available Locations...
-        return return_function(command, True, 200)
+            # Create GOTO Command
+            command = MoveCommand(data['name'], data['ID'], data['info'], location=data['location'])
+
+            # TODO: Check Feasibility Logic Here
+
+            # Check Available Locations...
+            if not data['location'] in available_locations:
+                return return_function(command, False, 400, f'Invalid Input - Unknown Location {data["location"]}')
+
+            # Return Feasibility True
+            return return_function(command, True, 200)
+
+        else:
+
+            # Create Move Command
+            command = MoveCommand(data['name'], data['ID'], data['info'], data['distance'], data['direction'], data['measure'])
+
+            # TODO: Check Feasibility Logic Here
+
+            # Check Direction
+            if not data['direction'] in ['forward', 'backward', 'left', 'right']:
+                return return_function(command, False, 400, f'Invalid Input - Unknown Direction {data["direction"]}')
+
+            # Check Distance
+            if not isinstance(data['distance'], (int, float)) or data['distance'] < 0:
+                return return_function(command, False, 400, f'Invalid Input - Unknown Distance {data["distance"]}')
+
+            # Check Measure
+            if not data['measure'] in ['meters', 'centimeters']:
+                return return_function(command, False, 400, f'Invalid Input - Unknown Measure {data["measure"]}')
+
+            # Check Measure and Distance - Centimeters < 20, Meters < 0.2
+            if (data['measure'] == 'centimeters' and data['distance'] < 20.0) or (data['measure'] == 'meters' and data['distance'] < 0.2):
+                return return_function(command, False, 400, f'Distance too Short - I can\'t move Distance {data["distance"]} {data["measure"]}')
+
+            # Check Measure and Distance - Centimeters > 500, Meters > 5
+            if (data['measure'] == 'centimeters' and data['distance'] > 500.0) or (data['measure'] == 'meters' and data['distance'] > 5.0):
+                return return_function(command, False, 400, f'Distance too Long - I can\'t move Distance {data["distance"]} {data["measure"]}')
+
+            # Return Feasibility True
+            return return_function(command, True, 200)
 
     # Check Stop Command Feasibility
     elif data['type'] == STOP:
@@ -89,7 +126,9 @@ def check_action():
         # Create Stop Command
         command = Command(data['name'], data['ID'], data['type'], data['info'])
 
-        # TODO: Check Feasibility -> Add Some Logic Here
+        # TODO: Check Feasibility Logic Here
+
+        # Return Feasibility True
         return return_function(command, True, 200)
 
     # Check Pick Command Feasibility
@@ -117,7 +156,17 @@ def check_action():
         # Create Pick Command
         command = PickCommand(data['name'], data['ID'], data['info'], data['object_name'], data['location'])
 
-        # TODO: Check Feasibility -> Add Some Logic Here
+        # TODO: Check Feasibility Logic Here
+
+        # Check Available Objects...
+        if not data['object_name'] in available_objects:
+            return return_function(command, False, 400, f'Invalid Input - Unknown Object {data["object_name"]}')
+
+        # Check Available Locations...
+        if not data['location'] in available_locations:
+            return return_function(command, False, 400, f'Invalid Input - Unknown Location {data["location"]}')
+
+        # Return Feasibility True
         return return_function(command, True, 200)
 
     # Check Move Object Command Feasibility
@@ -145,7 +194,19 @@ def check_action():
         # Create Move Object Command
         command = MoveObjectCommand(data['name'], data['ID'], data['info'], data['object_name'], data['from_location'], data['to_location'])
 
-        # TODO: Check Feasibility -> Add Some Logic Here
+        # TODO: Check Feasibility Logic Here
+
+        # Check Available Objects...
+        if not data['object_name'] in available_objects:
+            return return_function(command, False, 400, f'Invalid Input - Unknown Object {data["object_name"]}')
+
+        # Check Available Locations...
+        if not data['from_location'] in available_locations:
+            return return_function(command, False, 400, f'Invalid Input - Unknown From Location {data["from_location"]}')
+        elif not data['to_location'] in available_locations:
+            return return_function(command, False, 400, f'Invalid Input - Unknown To Location {data["to_location"]}')
+
+        # Return Feasibility True
         return return_function(command, True, 200)
 
     # Check Execute Task Command Feasibility
@@ -163,7 +224,13 @@ def check_action():
         # Create Execute Task Command
         command = ExecuteTaskCommand(data['name'], data['ID'], data['info'], data['task_name'])
 
-        # TODO: Check Feasibility -> Add Some Logic Here
+        # TODO: Check Feasibility Logic Here
+
+        # Check Available Tasks...
+        if not data['task_name'] in available_tasks:
+            return return_function(command, False, 400, f'Invalid Input - Unknown Task {data["task_name"]}')
+
+        # Return Feasibility True
         return return_function(command, True, 200)
 
 if __name__ == '__main__':
