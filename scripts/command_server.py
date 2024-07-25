@@ -129,11 +129,11 @@ def check_action():
 
             # Check Measure and Distance - Centimeters < 20, Meters < 0.2
             if (data['measure'] == 'centimeters' and data['distance'] < 20.0) or (data['measure'] == 'meters' and data['distance'] < 0.2):
-                return return_function(command, False, 400, f'Distance too Short - I can\'t move Distance {data["distance"]} {data["measure"]}')
+                return return_function(command, False, 400, f'Distance too Short - I can\'t move {data["distance"]} {data["measure"]}')
 
             # Check Measure and Distance - Centimeters > 500, Meters > 5
             if (data['measure'] == 'centimeters' and data['distance'] > 500.0) or (data['measure'] == 'meters' and data['distance'] > 5.0):
-                return return_function(command, False, 400, f'Distance too Long - I can\'t move Distance {data["distance"]} {data["measure"]}')
+                return return_function(command, False, 400, f'Distance too Long - I can\'t move {data["distance"]} {data["measure"]}')
 
             # Return Feasibility True
             return return_function(command, True, 200)
