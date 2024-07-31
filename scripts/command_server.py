@@ -116,7 +116,7 @@ def check_action():
             # TODO: Check Feasibility Logic Here
 
             # Check Direction
-            if not data['direction'] in ['forward', 'backward', 'left', 'right']:
+            if not data['direction'] in ['forward', 'backward', 'left', 'right', 'front', 'back']:
                 return return_function(command, False, 400, f'Invalid Input - Unknown Direction {data["direction"]}')
 
             # Check Distance
