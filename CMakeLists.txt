@@ -81,6 +81,7 @@ install(
   PROGRAMS
     scripts/command_gui.py
     scripts/command_server.py
+    scripts/experiment.py
   DESTINATION
   	${CATKIN_PACKAGE_PYTHON_DESTINATION}
 )
