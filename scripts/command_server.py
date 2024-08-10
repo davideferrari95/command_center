@@ -22,7 +22,8 @@ available_objects = {
     'scissors': 0,
     'box': 1,
     'hammer': 2,
-    'screwdriver': 3
+    'screwdriver': 3,
+    'plate': 4,
 }
 
 # Available Locations
@@ -38,7 +39,8 @@ object_default_location = {
     'scissors': 'table',
     'hammer': 'bench',
     'box': 'pickup area',
-    'screwdriver': 'bench'
+    'screwdriver': 'bench',
+    'plate': 'table',
 }
 
 def return_function(command:CommandUnion, success:bool=False, json_status:int=400,  error_message:str='') -> jsonify:
